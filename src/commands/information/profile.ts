@@ -29,7 +29,7 @@ export default new Command({
       ],
     },
     {
-      name: "settings",
+      name: "update",
       description: "Update your profile.",
       type: ApplicationCommandOptionType.Subcommand,
     },
