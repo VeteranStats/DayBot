@@ -12,7 +12,6 @@ import { RegisterCommandsOptions } from "../typings/Client";
 import { ClientConfig } from "../typings/Config";
 import { Event } from "./Event";
 import { Feature } from "./Feature";
-import { PrismaClient } from "@prisma/client";
 
 type BotOptions = Omit<ClientOptions, "intents">;
 
