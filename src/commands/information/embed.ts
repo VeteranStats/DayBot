@@ -121,6 +121,15 @@ export default new Command({
               ephemeral: true,
             })
             .catch(() => {});
+        })
+        .catch(() => {
+          return interaction.reply({
+            embeds: [
+              new EmbedBuilder()
+                .setDescription("You ran out of time.")
+                .setColor("#ff0000"),
+            ],
+          });
         });
     } else if (subcommand === "delete") {
       const id = interaction.options.getString("message_id");

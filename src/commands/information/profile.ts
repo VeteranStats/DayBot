@@ -43,6 +43,8 @@ export default new Command({
     const subcommand = interaction.options.getSubcommand();
 
     if (subcommand === "view") {
+      await interaction.deferReply();
+
       const user = await prisma.user.findFirst({
         where: {
           id: interaction.user.id,
@@ -58,8 +60,11 @@ export default new Command({
         })
         .setColor(client.config.color);
 
-      if (!user || (!user?.youtube && !user?.twitter && !user?.tiktok))
-        return interaction.reply({
+      if (
+        !user ||
+        (!user?.bio && !user?.youtube && !user?.twitter && !user?.tiktok)
+      )
+        return interaction.followUp({
           embeds: [
             embed.setDescription(
               "This user did not set any public information."
@@ -67,26 +72,24 @@ export default new Command({
           ],
         });
 
+      if (user?.bio) embed.setDescription(user.bio);
       if (user?.youtube)
         fields.push({
           name: "<:yt:1004352372434272317> YouTube",
           value: user.youtube,
-          inline: true,
         });
       if (user?.twitter)
         fields.push({
           name: "<:twitter:1035440197766238218> Twitter",
           value: user.twitter,
-          inline: true,
         });
       if (user?.tiktok)
         fields.push({
           name: "<:tiktok:1035440419485519882> TikTok",
           value: user.tiktok,
-          inline: true,
         });
 
-      return interaction.reply({
+      return interaction.followUp({
         embeds: [embed.setFields(fields)],
       });
     } else if (subcommand === "settings") {
@@ -95,6 +98,11 @@ export default new Command({
         .setTitle("Update Profile");
 
       const inputs: TextInputBuilder[] = [
+        new TextInputBuilder()
+          .setCustomId("bio")
+          .setLabel("Bio")
+          .setRequired(false)
+          .setStyle(TextInputStyle.Paragraph),
         new TextInputBuilder()
           .setCustomId("youtube")
           .setLabel("YouTube")
@@ -139,11 +147,13 @@ export default new Command({
             },
             create: {
               id: int.user.id,
+              bio: int.fields.getTextInputValue("bio"),
               youtube: int.fields.getTextInputValue("youtube"),
               twitter: int.fields.getTextInputValue("twitter"),
               tiktok: int.fields.getTextInputValue("tiktok"),
             },
             update: {
+              bio: int.fields.getTextInputValue("bio"),
               youtube: int.fields.getTextInputValue("youtube"),
               twitter: int.fields.getTextInputValue("twitter"),
               tiktok: int.fields.getTextInputValue("tiktok"),
@@ -155,6 +165,15 @@ export default new Command({
               new EmbedBuilder()
                 .setDescription("Changes saved successfully!")
                 .setColor("#00ff00"),
+            ],
+          });
+        })
+        .catch(() => {
+          return interaction.reply({
+            embeds: [
+              new EmbedBuilder()
+                .setDescription("You ran out of time.")
+                .setColor("#ff0000"),
             ],
           });
         });
