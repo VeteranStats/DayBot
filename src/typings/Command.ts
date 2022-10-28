@@ -5,7 +5,6 @@ import {
   CommandInteractionOptionResolver,
   GuildMember,
   ApplicationCommandType,
-  ApplicationCommandData,
 } from "discord.js";
 import { Bot } from "../structures/Client";
 
@@ -31,4 +30,4 @@ type AutocompleteFunction = (options: AutocompleteOptions) => any;
 export type CommandType = {
   run: RunFunction;
   autocomplete?: AutocompleteFunction;
-} & ApplicationCommandData;
+} & ChatInputApplicationCommandData;
