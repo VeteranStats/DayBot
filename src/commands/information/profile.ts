@@ -10,6 +10,7 @@ import {
   TextInputStyle,
 } from "discord.js";
 import { prisma } from "../../db";
+import { emojis } from "../../consts";
 
 export default new Command({
   name: "profile",
@@ -75,17 +76,17 @@ export default new Command({
       if (user?.bio) embed.setDescription(user.bio);
       if (user?.youtube)
         fields.push({
-          name: "<:yt:1004352372434272317> YouTube",
+          name: `${emojis.youtube} YouTube`,
           value: user.youtube,
         });
       if (user?.twitter)
         fields.push({
-          name: "<:twitter:1035440197766238218> Twitter",
+          name: `${emojis.twitter} Twitter`,
           value: user.twitter,
         });
       if (user?.tiktok)
         fields.push({
-          name: "<:tiktok:1035440419485519882> TikTok",
+          name: `${emojis.tiktok} TikTok`,
           value: user.tiktok,
         });
 
