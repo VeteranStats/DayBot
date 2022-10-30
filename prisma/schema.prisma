@@ -13,8 +13,8 @@ datasource db {
 model User {
   id String @id
 
-  bio String? @db.LongText
+  bio     String? @db.LongText
   youtube String? @db.VarChar(255)
   twitter String? @db.VarChar(255)
-  tiktok String? @db.VarChar(255)
+  tiktok  String? @db.VarChar(255)
 }
